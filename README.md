@@ -35,38 +35,150 @@ A comprehensive benchmarking platform where minimal coding agents compete head-t
 - **OpenHands** (production-ready, high benchmark scores)
 - **GitHub Copilot** (industry baseline)
 
+### Expected Strengths by Agent
+
+| Agent | SWE-bench 💻 | WebArena 🌐 | AgentBench 🎯 | Notes |
+|-------|--------------|-------------|---------------|-------|
+| **Pi** | ⭐⭐⭐ | ⭐ | ⭐⭐⭐ | Strong at coding + OS tasks, may lack browser |
+| **Aider** | ⭐⭐⭐ | ⭐ | ⭐⭐ | Git-native coder, CLI-focused |
+| **Mini-SWE** | ⭐⭐ | ❌ | ⭐ | Minimalist, SWE-bench specialist |
+| **Cline** | ⭐⭐⭐ | ⭐⭐ | ⭐⭐ | VS Code integration, broader tools |
+| **OpenHands** | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | ⭐⭐⭐⭐ | Production agent, browser support |
+
+*Ratings based on agent design, not benchmark results (TBD)*
+
 ## Benchmark Suite
 
-### Core Benchmarks
+Our benchmark suite tests three critical dimensions of agent capability:
 
-#### 1. SWE-bench Verified ⭐ PRIMARY
-- **Description**: 500 human-annotated real GitHub issues
-- **Task**: Generate patches that resolve described problems
-- **Verification**: Execution-based testing
-- **Why**: Gold standard for real-world coding ability
-- **Current SOTA**: Claude Opus 4.5 at 80.9%
-- **Link**: https://www.swebench.com/
+### Core Benchmarks (The Essential 3)
 
-#### 2. Terminal-Bench 2.0
-- **Description**: 89 curated command-line tasks
-- **Tasks**: Compiling code, training models, server setup
-- **Why**: Perfect for CLI-focused agents like Pi and Aider
-- **Current Performance**: Best agents ~60% overall, 16% on hard tasks
-- **Link**: https://www.tbench.ai/
-- **GitHub**: https://github.com/laude-institute/terminal-bench
+#### 1. 💻 SWE-bench Verified - CODING BENCHMARK
+**What it tests:** Real-world software engineering ability
 
-#### 3. HumanEval
-- **Description**: 164 handwritten Python function problems
-- **Task**: Write functions that pass test cases
-- **Why**: Standard baseline for basic coding capabilities
-- **Focus**: Functional correctness in single-file contexts
-- **Link**: https://github.com/openai/human-eval
+- **Description**: 500 human-verified GitHub issues from actual open-source projects
+- **Task**: Agent reads issue → generates code fix → must pass existing tests
+- **Environments**: Python repositories (Django, Flask, scikit-learn, etc.)
+- **Why**: Best predictor of real coding ability - not toy problems, actual bugs
+- **Current SOTA**: Claude Opus 4.5 at 80.9% | IBM CUGA at 61.7%
+- **Human baseline**: ~78%
+- **Links**: [Leaderboard](https://www.swebench.com/) | [GitHub](https://github.com/princeton-nlp/SWE-bench)
 
-### Optional Advanced Benchmarks
-- **MBPP**: 974 entry-level programming tasks
-- **RepoQA**: Repository-level code understanding
-- **SWE-bench Lite**: Faster subset for iteration
-- **MultiPL-E**: Multi-language capability (18+ languages)
+**What it covers:**
+- ✅ Multi-file changes across large codebases
+- ✅ Understanding existing code architecture
+- ✅ Bug fixing with test-driven verification
+- ✅ Working with real-world dependencies
+
+**What it misses:**
+- ❌ New feature development (only bug fixes)
+- ❌ Non-Python languages
+- ❌ UI/frontend work
+
+---
+
+#### 2. 🌐 WebArena - BROWSER MODE BENCHMARK
+**What it tests:** Web navigation and task completion ability
+
+- **Description**: 812 realistic web tasks across 4 simulated domains
+- **Domains**:
+  - 🛒 E-commerce (shopping site)
+  - 💬 Social forum (Reddit-like)
+  - 💻 Code collaboration (GitLab-like)
+  - 📝 Content management (WordPress-like)
+- **Task Examples**:
+  - "Find cheapest laptop with 16GB RAM and add to cart"
+  - "Reply to the top post in tech forum"
+  - "Create issue for bug #123 and assign to user X"
+- **Why**: Tests if agents can navigate real web interfaces like humans do
+- **Current SOTA**: IBM CUGA at 61.7% (Feb 2025)
+- **Human baseline**: ~78% (17% gap remaining)
+- **Links**: [Website](https://webarena.dev/) | [GitHub](https://github.com/web-arena-x/webarena) | [Paper](https://arxiv.org/abs/2307.13854)
+
+**What it covers:**
+- ✅ Web UI understanding (buttons, forms, links)
+- ✅ Multi-step workflows (search → filter → action)
+- ✅ Goal-oriented task completion
+- ✅ Realistic website interactions
+
+**What it misses:**
+- ❌ Non-web tasks
+- ❌ Mobile interfaces
+- ❌ Complex JavaScript-heavy SPAs
+
+---
+
+#### 3. 🎯 AgentBench - REAL-WORLD MULTI-DOMAIN BENCHMARK
+**What it tests:** General agent capability across diverse environments
+
+- **Description**: 8 different environments testing adaptability and reasoning
+- **Environments**:
+  1. 💻 **Operating System** - File manipulation, bash commands, system tasks
+  2. 🗄️ **Database** - SQL queries, data operations
+  3. 🕸️ **Knowledge Graph** - Complex relationship queries
+  4. 🎮 **Digital Card Game** - Strategic planning and decision-making
+  5. 🧩 **Lateral Thinking Puzzles** - Creative problem solving
+  6. 🏠 **House-Holding** - Physical world task simulation
+  7. 🛒 **Web Shopping** - E-commerce workflows
+  8. 🌐 **Web Browsing** - General web navigation
+- **Why**: Tests if agents can generalize across domains (not just specialists)
+- **Current SOTA**: GPT-4.1 at 62% Action Completion | Gemini 2.5 Flash at 94% Tool Selection
+- **Best Open-Source**: Kimi K2 at 53% ($0.039/session)
+- **Links**: [GitHub](https://github.com/THUDM/AgentBench) | [Paper](https://arxiv.org/abs/2308.03688) | [Leaderboard](https://huggingface.co/spaces/galileo-ai/agent-leaderboard)
+
+**What it covers:**
+- ✅ Cross-domain adaptability
+- ✅ Planning and multi-step reasoning
+- ✅ Tool use and integration
+- ✅ OS-level operations (perfect for CLI agents!)
+
+**What it misses:**
+- ❌ Deep domain expertise
+- ❌ Long-running projects (>30 min)
+- ❌ Creative/generative work
+
+---
+
+### Why These 3?
+
+| Benchmark | Tests | Best For | Time/Task |
+|-----------|-------|----------|-----------|
+| **SWE-bench** | Can it code? | Coding agents (Pi, Aider) | ~10 min |
+| **WebArena** | Can it use the web? | Browser-enabled agents | ~5 min |
+| **AgentBench** | Can it adapt to anything? | General-purpose agents | ~3 min |
+
+Together they cover: **Code + Web + Real-world tasks = Complete agent evaluation**
+
+---
+
+### 🔍 What Each Benchmark Uniquely Tests
+
+**SWE-bench tests:** "Can you fix real bugs in real codebases?"
+- Reading & understanding large existing projects
+- Making surgical changes without breaking things
+- Working with production-grade test suites
+
+**WebArena tests:** "Can you navigate websites like a human?"
+- Visual UI understanding (where's the button?)
+- Form filling and navigation flows
+- Goal completion across multiple pages
+
+**AgentBench tests:** "Can you adapt to any environment?"
+- Terminal/OS operations (bash, file system)
+- Strategic planning (games, puzzles)
+- Tool use across different domains
+- Reasoning without explicit code
+
+**The Gap:** An agent might ace SWE-bench (great at coding) but fail WebArena (can't use a browser) or bomb AgentBench puzzles (can't reason beyond code). Testing all 3 reveals true versatility.
+
+---
+
+### Optional Extended Benchmarks
+- **GAIA**: General AI assistant tasks (reasoning + tool use)
+- **Terminal-Bench**: CLI-only tasks (89 command-line scenarios)
+- **HumanEval**: Basic coding sanity check (164 Python functions)
+- **MBPP**: Entry-level programming (974 tasks)
+- **SWE-bench Lite**: Faster SWE-bench subset for iteration
 
 ## Evaluation Metrics
 
@@ -108,15 +220,15 @@ A comprehensive benchmarking platform where minimal coding agents compete head-t
 ```
 agent-arena/
 ├── benchmarks/
-│   ├── swe-bench/
+│   ├── swe-bench/          # Coding benchmark
 │   │   ├── runner.py
 │   │   ├── evaluator.py
 │   │   └── results/
-│   ├── terminal-bench/
+│   ├── webarena/           # Browser mode benchmark
 │   │   ├── runner.py
 │   │   ├── evaluator.py
 │   │   └── results/
-│   └── humaneval/
+│   └── agentbench/         # Real-world multi-domain benchmark
 │       ├── runner.py
 │       ├── evaluator.py
 │       └── results/
@@ -156,13 +268,18 @@ agent-arena/
 
 ### Scoring System
 
-- **Overall Score**: Weighted average across benchmarks
-  - SWE-bench Verified: 50%
-  - Terminal-Bench 2.0: 30%
-  - HumanEval: 20%
+- **Overall Score**: Weighted average across the 3 core dimensions
+  - 💻 SWE-bench (Coding): **40%**
+  - 🌐 WebArena (Browser): **30%**
+  - 🎯 AgentBench (Real-world): **30%**
 
 - **Efficiency Score**: (Accuracy / Cost) × Speed_factor
 - **Value Score**: Accuracy × Usability / Cost
+
+**Specialty Scores:**
+- **Coding Specialist Score**: SWE-bench performance (for pure coding agents)
+- **Web Automation Score**: WebArena performance (for browser agents)
+- **Generalist Score**: AgentBench average across all 8 environments
 
 ## Reference Projects & Prior Art
 
@@ -196,10 +313,11 @@ agent-arena/
 ## Features Roadmap
 
 ### Phase 1: Foundation
-- [ ] Setup benchmark environments (SWE-bench, Terminal-Bench, HumanEval)
+- [ ] Setup benchmark environments (SWE-bench, WebArena, AgentBench)
 - [ ] Agent wrapper implementations (Pi, Aider, Mini-SWE)
-- [ ] Basic evaluation metrics
-- [ ] Result storage system
+- [ ] Docker isolation for each benchmark
+- [ ] Basic evaluation metrics (accuracy, time, cost)
+- [ ] Result storage system (SQLite + JSON logs)
 
 ### Phase 2: Evaluation
 - [ ] Run full benchmark suite
